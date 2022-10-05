@@ -13,4 +13,4 @@ Please make sure there is a FQDN in the ingress YAML file for the container
 % kubectl create -f nginx-hello-app-ingress.yaml 
 
 The following is deploying a StatefulSet of Nginx Webserver container (a StatefutSet with 3 replicas by default) with PVC tempate to K3s with Longhorn 
-# kubectl create -f nginx-front-app.yaml 
+% kubectl create -f nginx-front-app.yaml 
