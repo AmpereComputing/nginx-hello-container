@@ -1,5 +1,5 @@
-Deploy Nginx Hello World WebApp container to OCI OKE 
-========
+# Deploy Nginx Hello World WebApp container to OCI OKE 
+
 
 ## The steps to deploy Nginx Hello World WebApp container with PVC to OCI (single pod)
 
