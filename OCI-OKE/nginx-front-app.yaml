@@ -1,0 +1,55 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-front-app-svc
+  labels:
+    app: nginx-front-app
+    tier: frontend    
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080  
+  selector:
+    app: nginx-front-app
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: nginx-front-app
+spec:
+  selector:
+    matchLabels:
+      app: nginx-front-app # has to match .spec.template.metadata.labels
+  serviceName: "nginx-front-app-svc"
+  replicas: 3 # by default is 1
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: nginx-front-app # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx-front-app
+        image: docker.io/mrdojojo/nginx-hello-app:1.1-arm64
+        ports:
+        - containerPort: 8080
+          name: nginx-front-app
+        volumeMounts:
+        - name: nginx-front-app-pvc   #storage
+          mountPath: "/usr/share/nginx/html"
+  volumeClaimTemplates:
+  - metadata:
+      name: nginx-front-app-pvc
+      labels:
+        app: nginx-front-app
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "oci-bv"
+      resources:
+        requests:
+          storage: 100Gi
+
