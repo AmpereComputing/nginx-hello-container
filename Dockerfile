@@ -143,6 +143,8 @@ COPY hello.conf /etc/nginx/conf.d/
 COPY index.html /usr/share/nginx/html/
 COPY style.css /usr/share/nginx/html/
 COPY *.png /usr/share/nginx/html/
+COPY *.jpg /usr/share/nginx/html/
+
 
 RUN apk --no-cache add shadow \
     && usermod -u ${NGINX_USER} nginx\
