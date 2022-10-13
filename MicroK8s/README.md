@@ -1,4 +1,4 @@
-# Deploy this Hello World WebApp container to Canonical MicroK8s cluster (v1.24)
+# Deploy Nginx Webserver container to Canonical MicroK8s cluster (v1.24)
 
 The follwing is the step to deploy a StatefulSet of Nginx Webserver container on Canonical MicroK8s cluster
 ---
