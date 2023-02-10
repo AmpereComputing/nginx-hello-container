@@ -1,9 +1,11 @@
 FROM alpine:3.12.0
 
 LABEL maintainer="jtu-ampere"
-ENV NGINX_USER=1001
-
+ENV NGINX_UID=1001
+ENV NGINX_GID=1001
 ENV NGINX_VERSION 1.16.1
+
+
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && CONFIG="\
@@ -51,8 +53,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     --with-file-aio \
     --with-http_v2_module \
     " \
-    && addgroup -S nginx \
-    && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
+    && addgroup -g $NGINX_GID -S nginx \
+    && adduser -S -D -u $NGINX_UID -h /var/cache/nginx -s /sbin/nologin -G nginx nginx  \
     && apk add --no-cache --virtual .build-deps \
     gcc \
     libc-dev \
@@ -147,8 +149,8 @@ COPY *.jpg /usr/share/nginx/html/
 
 
 RUN apk --no-cache add shadow \
-    && usermod -u ${NGINX_USER} nginx\
-    && chown -R ${NGINX_USER}:0 /var/cache/nginx \
+    && usermod -u ${NGINX_UID} nginx\
+    && chown -R ${NGINX_UID}:${NGINX_GID} /var/cache/nginx \
     && chmod -R g+w /var/cache/nginx \
     && apk del shadow
 
@@ -156,6 +158,6 @@ EXPOSE 8080
 
 STOPSIGNAL SIGTERM
 
-USER ${NGINX_USER}
+USER ${NGINX_UID}
 
 CMD ["nginx", "-g", "daemon off;"]
