@@ -149,7 +149,7 @@ COPY *.png /usr/share/nginx/html/
 RUN ls -al /var/cache/nginx 
 RUN apk --no-cache add shadow \
     && usermod -u $NGINX_UID nginx\
-    && chown -R $NGINX_UID:$NGINX_GID /var/cache/nginx \
+    && chown -R $NGINX_UID:0 /var/cache/nginx \
     && chmod -R g+w /var/cache/nginx \
     && chown -R $NGINX_UID:$NGINX_GID /usr/share/nginx/html \
     && chmod -R g+w /usr/share/nginx/html \
