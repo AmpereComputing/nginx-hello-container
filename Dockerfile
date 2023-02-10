@@ -5,7 +5,7 @@ ENV NGINX_UID=1001
 ENV NGINX_GID=1001
 ENV NGINX_VERSION 1.16.1
 
-
+RUN echo 'UID=' $NGINX_UID
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && CONFIG="\
@@ -145,19 +145,20 @@ COPY hello.conf /etc/nginx/conf.d/
 COPY index.html /usr/share/nginx/html/
 COPY style.css /usr/share/nginx/html/
 COPY *.png /usr/share/nginx/html/
-COPY *.jpg /usr/share/nginx/html/
 
-
+RUN ls -al /var/cache/nginx 
 RUN apk --no-cache add shadow \
-    && usermod -u ${NGINX_UID} nginx\
-    && chown -R ${NGINX_UID}:${NGINX_GID} /var/cache/nginx \
+    && usermod -u $NGINX_UID nginx\
+    && chown -R $NGINX_UID:$NGINX_GID /var/cache/nginx \
     && chmod -R g+w /var/cache/nginx \
+    && chown -R $NGINX_UID:$NGINX_GID /usr/share/nginx/html \
+    && chmod -R g+w /usr/share/nginx/html \
     && apk del shadow
 
 EXPOSE 8080
 
 STOPSIGNAL SIGTERM
 
-USER ${NGINX_UID}
+USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]
