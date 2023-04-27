@@ -7,4 +7,5 @@ The follwing is the step to deploy a StatefulSet of Nginx Webserver container on
 >Please make sure there is a FQDN in the ingress YAML file for the container!
 
 % kubectl create ns vod-poc
+
 % kubectl create -f nginx-front-app.yaml -n vod-poc
