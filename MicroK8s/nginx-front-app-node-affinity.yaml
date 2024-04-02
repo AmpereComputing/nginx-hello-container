@@ -60,7 +60,6 @@ spec:
         app: nginx-front-app
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "mayastor"
       resources:
         requests:
           storage: 10Gi
